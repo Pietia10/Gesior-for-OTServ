@@ -3,7 +3,7 @@ define('INITIALIZED', true);
 define('ONLY_PAGE', false);
 if(!file_exists('install.txt'))
 {
-	echo('AAC installation is disabled. To enable it make file <b>install.php</b> in main AAC directory and put there your IP.');
+	echo('AAC installation is disabled. To enable it make file <b>install.txt</b> in main AAC directory and put there your IP.');
 	exit;
 }
 $installIP = trim(file_get_contents('install.txt'));
@@ -110,7 +110,7 @@ elseif($page == 'menu')
 	<a href="install.php?page=step&step=5" target="step">5. Set Admin Account</a><br>
 	<b>Author:</b><br>
 	Gesior<br>
-	Compatible with TFS 0.3.6 and TFS 0.4 up to revision 3702</a>';
+	Compatible with OTServ 0.6.3 and 0.6.4 mysql database it wasnt tested with sqlite or postgre</a>';
 }
 elseif($page == 'step')
 {
@@ -254,12 +254,12 @@ elseif($page == 'step')
 			}
 			else
 			{
-				echo 'File <b>config.lua</b> loaded from <font color="red"><i>'.$path.'config.lua</i></font> and it\'s not valid TFS config.lua file. <a href="install.php?page=step&step=1">Go to STEP 1 - select other directory.</a> If it\'s your config.lua file from TFS contact with acc. maker author.';
+				echo 'File <b>config.lua</b> loaded from <font color="red"><i>'.$path.'config.lua</i></font> and it\'s not valid OTServ config.lua file. <a href="install.php?page=step&step=1">Go to STEP 1 - select other directory.</a> If it\'s your config.lua file from OTServ contact with acc. maker author.';
 			}
 		}
 		else
 		{
-			echo 'Please write you TFS directory below. Like: <i>C:\Documents and Settings\Gesior\Desktop\TFS 0.2.9\</i><form action="install.php">
+			echo 'Please write you OTServ directory below. Like: <i>C:\Documents and Settings\Gesior\Desktop\OTServ0.6.3\</i><form action="install.php">
 			<input type="text" name="server_path" size="90" value="'.htmlspecialchars(getServerPath()).'" /><input type="hidden" name="page" value="step" /><input type="hidden" name="step" value="1" /><input type="submit" value="Set server path" />
 			</form>';
 		}
@@ -295,6 +295,9 @@ elseif($page == 'step')
 		$columns[] = array('guilds', 'create_ip', 'INT', '11', '0');
 		$columns[] = array('guilds', 'balance', 'BIGINT UNSIGNED', '', '0');
 		$columns[] = array('guilds', 'world_id', 'INT', '11', '0');
+		$columns[] = array('guilds', 'motd', 'VARCHAR', '255', '');
+		
+		$columns[] = array('houses', 'world_id', 'INT', '11', '0');
 		
 		$columns[] = array('killers', 'war', 'INT', '11', '0');
 
@@ -367,35 +370,13 @@ elseif($page == 'step')
 							  PRIMARY KEY  (`id`),
 							  KEY `section` (`section`)
 							) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
-		$tables[Database::DB_MYSQL]['guild_wars'] = "CREATE TABLE `guild_wars` (
-							  `id` INT NOT NULL AUTO_INCREMENT,
-							  `guild_id` INT NOT NULL,
-							  `enemy_id` INT NOT NULL,
-							  `begin` BIGINT NOT NULL DEFAULT '0',
-							  `end` BIGINT NOT NULL DEFAULT '0',
-							  `frags` INT UNSIGNED NOT NULL DEFAULT '0',
-							  `payment` BIGINT UNSIGNED NOT NULL DEFAULT '0',
-							  `guild_kills` INT UNSIGNED NOT NULL DEFAULT '0',
-							  `enemy_kills` INT UNSIGNED NOT NULL DEFAULT '0',
-							  `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-							  PRIMARY KEY (`id`),
-							  KEY `status` (`status`),
-							  KEY `guild_id` (`guild_id`),
-							  KEY `enemy_id` (`enemy_id`)
-							) ENGINE=InnoDB;";
-		$tables[Database::DB_MYSQL]['guild_wars_table_references'] = "ALTER TABLE `guild_wars`
-								  ADD CONSTRAINT `guild_wars_ibfk_1` FOREIGN KEY (`guild_id`) REFERENCES `guilds` (`id`) ON DELETE CASCADE,
-								  ADD CONSTRAINT `guild_wars_ibfk_2` FOREIGN KEY (`enemy_id`) REFERENCES `guilds` (`id`) ON DELETE CASCADE;";
 		$tables[Database::DB_MYSQL]['guild_kills'] = "CREATE TABLE `guild_kills` (
 							  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 							  `guild_id` INT NOT NULL,
 							  `war_id` INT NOT NULL,
 							  `death_id` INT NOT NULL
 							) ENGINE = InnoDB;";
-		$tables[Database::DB_MYSQL]['guild_kills_table_references'] = "ALTER TABLE `guild_kills`
-							  ADD CONSTRAINT `guild_kills_ibfk_1` FOREIGN KEY (`war_id`) REFERENCES `guild_wars` (`id`) ON DELETE CASCADE,
-							  ADD CONSTRAINT `guild_kills_ibfk_2` FOREIGN KEY (`death_id`) REFERENCES `player_deaths` (`id`) ON DELETE CASCADE,
-							  ADD CONSTRAINT `guild_kills_ibfk_3` FOREIGN KEY (`guild_id`) REFERENCES `guilds` (`id`) ON DELETE CASCADE;";
+
 		// sqlite tables
 		$tables[Database::DB_SQLITE]['z_ots_comunication'] = 'CREATE TABLE "z_ots_comunication" (
 							  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -504,9 +485,9 @@ elseif($page == 'step')
 		echo '<h1>STEP '.$step.'</h1>Set Admin Account<br>';
 		if(empty($_REQUEST['saveaccpassword']))
 		{
-			echo 'Admin account login is: <b>1</b><br/>Set new password to this account.<br>';
+			echo 'Admin account login is: tibia set password tibia<br>';
 			echo 'New password: <form action="install.php" method=POST><input type="text" name="newpass" size="35">(Don\'t give it password to anyone!)';
-			echo '<input type="hidden" name="saveaccpassword" value="yes"><input type="hidden" name="page" value="step"><input type="hidden" name="step" value="5"><input type="submit" value="SET"></form><br>If account with login 1 doesn\'t exist installator will create it and set your password.';
+			echo '<input type="hidden" name="saveaccpassword" value="yes"><input type="hidden" name="page" value="step"><input type="hidden" name="step" value="5"><input type="submit" value="SET"></form><br>If account with login tibia doesn\'t exist installator will create it and set your password.';
 		}
 		else
 		{
@@ -540,7 +521,7 @@ elseif($page == 'step')
 				$_SESSION['account'] = 1;
 				$_SESSION['password'] = $newpass;
 				$logged = TRUE;
-				echo '<h1>Admin account login: 1<br>Admin account password: '.$newpass.'</h1><br/><h3>It\'s end of installation. Installation is blocked!</h3>'; 
+				echo '<h1>Admin account login: tibia<br>Admin account password: tibia</h1><br/><h3>It\'s end of installation. Installation is blocked Keep in mind that password is tibia/tibia!</h3>'; 
 				if(!unlink('install.txt'))
 					new Error_Critic('', 'Cannot remove file <i>install.txt</i>. You must remove it to disable installer. I recommend you to go to step <i>0</i> and check if any other file got problems with WRITE permission.');
 			}

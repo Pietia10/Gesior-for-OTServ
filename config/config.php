@@ -1,7 +1,7 @@
 <?PHP
 # Account Maker Config
-$config['site']['serverPath'] = "/yourpath/to/servers";
-$config['site']['useServerConfigCache'] = "no";
+$config['site']['serverPath'] = "C:/Users/Administrator/Downloads/alba/";
+$config['site']['useServerConfigCache'] = false;
 $config['site']['worlds'] = array(0 => 'OTSERVTEAM');
 $towns_list[0] = array(1 => 'Venore', 2 => "Thais", 3 => "Kazordoon", 4 => 'Carlin', 5 => 'Abdendriel', 7 => 'Liberty Bay', 8 => 'Port Hope', 9 => 'Ankrahmun', 10 => 'Darashia', 11 => 'Edron', 12 => 'Svargrond', 13 => 'Yalahar', 14=> 'Farmine');
 
@@ -74,7 +74,7 @@ $config['site']['generate_new_reckey'] = false;
 $config['site']['generate_new_reckey_price'] = 500;
 
 # PAGE: guilds.php
-$config['site']['guild_need_level'] = 15;
+$config['site']['guild_need_level'] = 1;
 $config['site']['guild_need_pacc'] = false;
 $config['site']['guild_image_size_kb'] = 50;
 $config['site']['guild_description_chars_limit'] = 2000;

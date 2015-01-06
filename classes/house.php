@@ -5,8 +5,8 @@ if(!defined('INITIALIZED'))
 class House extends ObjectData
 {
 	public static $table = 'houses';
-	public $data = array('townid' => null,'name' => null ,'rent' => null, 'guuildhall' => null, 'titles' => null, 'doors' => null, 'beds' => null,  'owner' => null, 'paid' => null, 'clear' => null, 'warnings' => null, 'lastwarning' => null, 'world_id' => null, 'price' => null, 'size' => null);
-	public static $fields = array('id', 'townid', 'name', 'rent', 'guildhall',  'tiles', 'doors', 'beds', 'owner', 'paid', 'clear', 'warnings', 'lastwarning', 'world_id', 'price', 'size');
+	public $data = array('townid' => null,'name' => null ,'rent' => null, 'guuildhall' => null, 'titles' => null, 'doors' => null, 'beds' => null,  'owner' => null, 'paid' => null, 'clear' => null, 'warnings' => null, 'lastwarning' => null, 'world_id' => null);
+	public static $fields = array('id', 'townid', 'name', 'rent', 'guildhall',  'tiles', 'doors', 'beds', 'owner', 'paid', 'clear', 'warnings', 'lastwarning', 'world_id');
 
     public function __construct($house_id = null)
     {
