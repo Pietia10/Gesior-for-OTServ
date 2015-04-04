@@ -39,6 +39,13 @@ function replaceAll($text, $smile)
         $url = substr($text, stripos($text, '[url]')+5, stripos($text, '[/url]') - stripos($text, '[url]') - 5);
         $text = str_ireplace('[url]'.$url.'[/url]', '<a href="'.$url.'" target="_blank">'.$url.'</a>', $text);
     }
+    while(stripos($text, '[url') !== false && stripos($text, '[/url]') !== false && stripos($text, '[url') < stripos($text, '[/url]'))
+    {
+        $url_section = substr($text, stripos($text, '[url'), stripos($text, '[/url]') + 6 - stripos($text, '[url'));
+        $url = substr($url_section, stripos($url_section, '[url')+5, stripos($url_section, ']') - stripos($url_section, '[url') - 5);
+		$anchor_name = substr($url_section, stripos($url_section, ']')+1, stripos($url_section, '[/url]') - stripos($url_section, ']') - 1);
+        $text = str_ireplace($url_section, '<a href="'.$url.'" target="_blank">'.$anchor_name.'</a>', $text);
+    }
     while(stripos($text, '[player]') !== false && stripos($text, '[/player]') !== false )
     {
         $player = substr($text, stripos($text, '[player]')+8, stripos($text, '[/player]') - stripos($text, '[player]') - 8);
